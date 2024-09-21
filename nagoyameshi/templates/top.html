@@ -1,0 +1,47 @@
+{% extends "base.html" %} 
+
+
+{% block main %}
+    <form action="" method="">
+
+        <select name="category">
+            <option value="">カテゴリ未選択</option>
+
+            {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.str_id == request.GET.category %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+         
+        </select>
+        
+        <select name="">
+            <option value="">A</option>
+            <option value="" selected>B</option>
+            <option value="">C</option>
+        </select>
+
+        <input type="text" name="search" value="{{ request.GET.search }}">
+        <input type="submit" value="検索">
+    </form>
+
+
+    <main class="container">
+
+        <div class="row">
+    {% for restaurant in restaurants %}
+    <div class="border col-4">
+        <div>カテゴリ: {{restaurant.category }}</div>
+        <div>名前: {{restaurant.name }}</div>
+        <div>{{restaurant.description }}</div>
+
+
+        <div class="text-end">
+            <a class="btn btn-outline-primary" href="{% url 'restaurant' restaurant.id %}">詳細はこちら</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+</main>
+
+
+{% endblock %}
