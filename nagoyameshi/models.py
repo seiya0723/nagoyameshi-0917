@@ -1,13 +1,5 @@
 from django.db import models
 
-class Topic(models.Model):
-    class Meta:
-        db_table = "topic"
-    comment     = models.CharField(verbose_name="コメント",max_length=2000)
-    def __str__(self):
-        return self.comment
-
-
 # Create your models here.
 # models.py → admin.py → views.py → urls.py → templates 
 
@@ -122,8 +114,6 @@ class Favorite(models.Model):
 
     user       = models.ForeignKey(User, verbose_name="登録者",on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, verbose_name="店舗",on_delete=models.CASCADE)
-
-    
     created_at = models.DateTimeField(verbose_name="作成日時", default=timezone.now)
 
 

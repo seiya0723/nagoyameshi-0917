@@ -1,13 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-
-{# マイページを表示させる #}
 <h2>マイページ</h2>
-
-{# <div>{{ favorites }}</div> #}
-{# forループを使って、 favorites のデータを一つずつ表示させる。#}
-
 
 <h2>お気に入りした店舗</h2>
 
@@ -29,8 +23,6 @@
 
 <h2>予約した店舗一覧</h2>
 
-{# TODO: 予約した店舗をマイページに表示してみる。予約した店舗名、予約日時、予約人数の3つを表示する。 #}
-
 {% for reservation in reservations %}
 <div>
     <div>店舗: {{ reservation.restaurant.name }}</div>
@@ -39,22 +31,17 @@
 </div>
 {% endfor %}
 
-
-
 <h2>有料会員登録</h2>
 
-{# CheckoutView の postメソッドへ行くには？ #}
-
 {% if is_premium %}
-    {# すでに有料会員登録した人 #}
-    <a href="{% url 'portal' %}">有料会員設定</a>
-{% else %}
-    {# まだ有料会員登録をしていない人 #}
-    <form action="{% url 'checkout' %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="有料会員登録をする">
-    </form>
-{% endif %}
 
+<a href="{% url 'portal' %}">有料会員設定</a>
+{% else %}
+
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="有料会員登録をする">
+</form>
+{% endif %}
 
 {% endblock %}

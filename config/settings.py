@@ -27,13 +27,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
-
-#django-allauth関係。django.contrib.sitesで使用するSITE_IDを指定する
 SITE_ID = 1
-#django-allauthログイン時とログアウト時のリダイレクトURL
+
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
-
 
 
 # Application definition
@@ -51,7 +48,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
 ]
 
 MIDDLEWARE = [
@@ -134,8 +130,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-# 静的ファイルの配信設定は開発中にだけ有効
 if DEBUG:
     STATICFILES_DIRS = [ BASE_DIR / "static" ]
 
@@ -145,37 +139,23 @@ if DEBUG:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# APIキーをここに直に貼り付けする場合、GitHubにはプッシュしてはいけない。
-# テスト用のAPIキーなので実害はないが、本来秘密にする必要があるキーなので、GitHubに公開してはいけない。
-# できれば環境変数から、APIキーを読み取りするようにする。
-#STRIPE_API_KEY          = ""
-#STRIPE_PUBLISHABLE_KEY  = ""
-#STRIPE_PRICE_ID         = ""
-
-
-# Stripeの設定
 import os
-
+"""
 if "STRIPE_PUBLISHABLE_KEY" in os.environ and "STRIPE_API_KEY" in os.environ and "STRIPE_PRICE_ID" in os.environ:
     STRIPE_PUBLISHABLE_KEY  = os.environ["STRIPE_PUBLISHABLE_KEY"]
     STRIPE_API_KEY          = os.environ["STRIPE_API_KEY"]
     STRIPE_PRICE_ID         = os.environ["STRIPE_PRICE_ID"]
+"""
 
-
-# DEBUGがFalseのとき、Herokuデプロイ仕様の設定が有効になる
 if not DEBUG:
 
-    #INSTALLED_APPSにcloudinaryの追加
     INSTALLED_APPS.append('cloudinary')
     INSTALLED_APPS.append('cloudinary_storage')
 
-    # ALLOWED_HOSTSにホスト名)を入力
     ALLOWED_HOSTS = [ os.environ["HOST"] ]
 
-    # CSRFトークン、パスワードのハッシュ化などに使われる。
     SECRET_KEY = os.environ["SECRETKEY"]
     
-    # 静的ファイル配信ミドルウェア、whitenoiseを使用。※ 順番不一致だと動かないため下記をそのままコピーする。
     MIDDLEWARE = [ 
         'django.middleware.security.SecurityMiddleware',
         'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -185,15 +165,12 @@ if not DEBUG:
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-
-        "allauth.account.middleware.AccountMiddleware",        
+        'allauth.account.middleware.AccountMiddleware',
         ]
 
-    # 静的ファイル(static)の存在場所を指定する。
     STATIC_ROOT = BASE_DIR / 'static'
 
-    # DBの設定
+    
     DATABASES = { 
             'default': {
                 'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -205,14 +182,13 @@ if not DEBUG:
                 }
             }
 
-    #DBのアクセス設定
+    
     import dj_database_url
 
     db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
     DATABASES['default'].update(db_from_env)
     
 
-    #cloudinaryの設定
     CLOUDINARY_STORAGE = { 
             'CLOUD_NAME': os.environ["CLOUD_NAME"], 
             'API_KEY'   : os.environ["API_KEY"], 
@@ -220,12 +196,9 @@ if not DEBUG:
             "SECURE"    : True,
             }
 
-    #これは画像だけ(上限20MB)
-    #DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-    #これは動画だけ(上限100MB)
-    #DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.VideoMediaCloudinaryStorage'
-
-    #これで全てのファイルがアップロード可能(上限20MB。ビュー側でアップロードファイル制限するなら基本これでいい)
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
-    
+
+
+    STRIPE_PUBLISHABLE_KEY  = os.environ["STRIPE_PUBLISHABLE_KEY"]
+    STRIPE_API_KEY          = os.environ["STRIPE_API_KEY"]
+    STRIPE_PRICE_ID         = os.environ["STRIPE_PRICE_ID"]

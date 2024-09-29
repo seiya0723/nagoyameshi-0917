@@ -25,13 +25,9 @@ urlpatterns = [
     path("review/<int:pk>/",ReviewView.as_view(), name="review"),
     path("favorite/<int:pk>/",FavoriteView.as_view(), name="favorite"),
     path("reservation/<int:pk>/", ReservationView.as_view(), name="reservation"),
-
-    # マイページ
+    
     path("mypage/", MypageView.as_view(), name="mypage"),
 
-
-    # SuccessView 
-    # CheckoutView の URL設定
     path("success/", SuccessView.as_view(), name="success"),
     path("checkout/", CheckoutView.as_view(), name="checkout"),
     path("premium/", PremiumView.as_view(), name="premium"),
@@ -39,8 +35,6 @@ urlpatterns = [
 
 
 
+
     path('accounts/', include('allauth.urls')),
-
-    #path('',include("nagoyameshi.urls")),
-
 ]

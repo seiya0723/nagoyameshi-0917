@@ -16,12 +16,6 @@
     <header>
         <h1 class="bg-primary text-white">NAGOYAMESHI</h1>
     </header>
-    {# ログインリンク #}
-    {# ログインをしているときは、ログアウトのリンク表示。 #}
-    {# ログアウトをしているときは、ログインとアカウント新規作成のリンク表示。 #}
-
-    {# ログインしていれば request.user.is_authenticated は True #}
-    {# ログアウトであれば request.user.is_authenticated は False #}
 
     {% if request.user.is_authenticated %}
     <a href="{% url 'account_logout' %}">ログアウト</a>
@@ -30,11 +24,6 @@
     <a href="{% url 'account_login' %}">ログイン</a>
     <a href="{% url 'account_signup' %}">アカウント新規作成</a>
     {% endif %}
-
-
-
-
-
 
     {% block main %}
     {% endblock %}
