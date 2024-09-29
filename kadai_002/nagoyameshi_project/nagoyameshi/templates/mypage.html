@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>マイページ</h2>
+
+<h2>お気に入りした店舗</h2>
+
+{% for favorite in favorites %}
+<div>
+    <a href="{% url 'restaurant' favorite.restaurant.id %}">{{ favorite.restaurant.name }}</a>
+</div>
+{% endfor %}
+
+
+<h2>投稿したレビュー一覧</h2>
+
+{% for review in reviews %}
+<div>
+    <div>店舗: {{ review.restaurant.name }}</div>
+    <div>投稿内容: {{ review.content }}</div>
+</div>
+{% endfor %}
+
+<h2>予約した店舗一覧</h2>
+
+{% for reservation in reservations %}
+<div>
+    <div>店舗: {{ reservation.restaurant.name }}</div>
+    <div>予約日時: {{ reservation.datetime }}</div>
+    <div>予約人数: {{ reservation.headcount }}</div>
+</div>
+{% endfor %}
+
+<h2>有料会員登録</h2>
+
+{% if is_premium %}
+
+<a href="{% url 'portal' %}">有料会員設定</a>
+{% else %}
+
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="有料会員登録をする">
+</form>
+{% endif %}
+
+{% endblock %}
